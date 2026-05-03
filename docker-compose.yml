@@ -3,8 +3,6 @@ services:
     build: .
     container_name: linkskeeper
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:8000:8000"
     environment:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:-}
       APP_BASE_URL: ${APP_BASE_URL:-}
@@ -19,3 +17,13 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    networks:
+      pidor-net:
+        aliases:
+          - linkskeeper.pidor.local
+
+
+networks:
+  pidor-net:
+    external: true
+    name: pidor-net
