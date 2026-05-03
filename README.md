@@ -29,10 +29,27 @@ Open `http://127.0.0.1:5000`.
 
 ## Production Sketch
 
-Run behind nginx with gunicorn:
+Run with Docker Compose:
 
 ```bash
-gunicorn 'linkskeeper:create_app()' --bind 127.0.0.1:8000
+cp .env.example .env
+docker compose up -d --build
 ```
 
-Point nginx for `your-domain.example` to `127.0.0.1:8000`.
+The app listens on `127.0.0.1:8000` if nginx is on the same host and proxies to
+the compose service through the published port.
+
+SQLite is stored in the mounted local folder:
+
+```text
+./data/linkskeeper.db
+```
+
+Inside the container this is `/data/linkskeeper.db`, so rebuilding the image does
+not delete links.
+
+For Google OAuth in production, add this redirect URI in Google Cloud Console:
+
+```text
+https://your-domain.example/auth/google/callback
+```
