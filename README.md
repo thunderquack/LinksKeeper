@@ -39,11 +39,13 @@ docker compose up -d --build
 
 The container runs pending database migrations before starting gunicorn.
 
-The compose service joins the external Docker network `pidor-net` with alias
-`linkskeeper.pidor.local`. Point nginx to:
+Set deployment-specific values, including `APP_BASE_URL`, in `.env`.
+
+The compose service joins the external Docker network configured in
+`docker-compose.yml`. Point nginx to the service alias from that file:
 
 ```text
-http://linkskeeper.pidor.local:8000
+http://<service-alias>:8000
 ```
 
 SQLite is stored in the mounted local folder:
