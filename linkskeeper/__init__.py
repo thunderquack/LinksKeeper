@@ -58,7 +58,12 @@ def load_user(user_id: str) -> User | None:
 
 
 def create_app() -> Flask:
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(
+        __name__,
+        instance_relative_config=True,
+        static_folder="../static",
+        template_folder="../templates",
+    )
     app.config.from_mapping(
         SECRET_KEY=os.getenv("FLASK_SECRET_KEY", "dev-secret-change-me"),
         SQLALCHEMY_DATABASE_URI=os.getenv("DATABASE_URL", "sqlite:///linkskeeper.db"),

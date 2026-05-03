@@ -4,14 +4,21 @@ version = "0.1.0"
 description = "Lightweight personal URL shortener"
 requires-python = ">=3.12"
 dependencies = [
-    "authlib>=1.3.2",
+    "authlib>=1.3.2,<1.7",
     "flask>=3.0.3",
     "flask-login>=0.6.3",
     "flask-sqlalchemy>=3.1.1",
     "gunicorn>=22.0.0; platform_system != 'Windows'",
     "python-dotenv>=1.0.1",
+    "requests>=2.32.3",
 ]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["linkskeeper*"]
 
 [tool.ruff]
 line-length = 100
-
