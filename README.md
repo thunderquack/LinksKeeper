@@ -10,6 +10,7 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -e .
 Copy-Item .env.example .env
+flask --app linkskeeper db upgrade
 flask --app linkskeeper run --debug
 ```
 
@@ -36,8 +37,14 @@ cp .env.example .env
 docker compose up -d --build
 ```
 
-The app listens on `127.0.0.1:8000` if nginx is on the same host and proxies to
-the compose service through the published port.
+The container runs pending database migrations before starting gunicorn.
+
+The compose service joins the external Docker network `pidor-net` with alias
+`linkskeeper.pidor.local`. Point nginx to:
+
+```text
+http://linkskeeper.pidor.local:8000
+```
 
 SQLite is stored in the mounted local folder:
 
@@ -53,3 +60,15 @@ For Google OAuth in production, add this redirect URI in Google Cloud Console:
 ```text
 https://your-domain.example/auth/google/callback
 ```
+
+## Database Migrations
+
+After changing SQLAlchemy models, create and review a migration:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+flask --app linkskeeper db migrate -m "describe change"
+flask --app linkskeeper db upgrade
+```
+
+On deploy, `docker compose up -d --build` applies pending migrations automatically.

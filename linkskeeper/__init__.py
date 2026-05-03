@@ -14,6 +14,7 @@ from flask_login import (
     login_user,
     logout_user,
 )
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -22,6 +23,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 db = SQLAlchemy()
 login_manager = LoginManager()
 oauth = OAuth()
+migrate = Migrate()
 
 
 class User(UserMixin, db.Model):
@@ -73,15 +75,13 @@ def create_app() -> Flask:
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
     login_manager.login_view = "login"
     oauth.init_app(app)
 
     register_google(app)
     register_routes(app)
-
-    with app.app_context():
-        db.create_all()
 
     return app
 

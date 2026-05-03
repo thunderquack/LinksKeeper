@@ -9,6 +9,7 @@ RUN adduser --disabled-password --gecos "" appuser
 
 COPY pyproject.toml README.md ./
 COPY linkskeeper ./linkskeeper
+COPY migrations ./migrations
 COPY static ./static
 COPY templates ./templates
 
@@ -21,4 +22,4 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["gunicorn", "linkskeeper:create_app()", "--bind", "0.0.0.0:8000", "--workers", "2"]
+CMD ["sh", "-c", "python -m linkskeeper.db_bootstrap && exec gunicorn 'linkskeeper:create_app()' --bind 0.0.0.0:8000 --workers 2"]
