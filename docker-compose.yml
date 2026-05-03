@@ -6,8 +6,8 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     environment:
-      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:-change-me}
-      APP_BASE_URL: ${APP_BASE_URL:-https://your-domain.example}
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:-}
+      APP_BASE_URL: ${APP_BASE_URL:-}
       DATABASE_URL: sqlite:////data/linkskeeper.db
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
