@@ -1,6 +1,7 @@
 # LinksKeeper
 
-Lightweight URL shortener with email/password login, optional Google OAuth, and numeric short links.
+Lightweight URL shortener with email/password login, optional Google OAuth, numeric public
+short links, and optional private hash links.
 
 ## Local Setup
 
@@ -21,6 +22,11 @@ Open `http://127.0.0.1:5000`.
 - `DATABASE_URL`: defaults to local SQLite.
 - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`: enables Google OAuth when both are set.
 
+## Link Types
+
+- Public links use the database id: `https://your-domain.example/1`.
+- Private links use a long random token at the same root: `https://your-domain.example/<hash>`.
+
 ## Production Sketch
 
 Run behind nginx with gunicorn:
@@ -30,4 +36,3 @@ gunicorn 'linkskeeper:create_app()' --bind 127.0.0.1:8000
 ```
 
 Point nginx for `your-domain.example` to `127.0.0.1:8000`.
-
